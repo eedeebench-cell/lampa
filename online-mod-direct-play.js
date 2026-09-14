@@ -1,4 +1,4 @@
-/* Online Mod Direct Play v1.1.1
+/* Online Mod Direct Play v1.1.2
  * Install alongside https://nb557.github.io/plugins/online_mod.js
  * Uses Lampa's existing source button; no provider or player overrides.
  */
@@ -6,17 +6,17 @@
     'use strict';
 
     function install() {
-        var lampa = window.Lampa;
-        if (!lampa || !lampa.Select || !lampa.Lang ||
-            !lampa.Listener || typeof lampa.Listener.follow !== 'function') return false;
+        var Lampa = window.Lampa;
+        if (!Lampa || !Lampa.Select || !Lampa.Lang ||
+            !Lampa.Listener || typeof Lampa.Listener.follow !== 'function') return false;
 
-        var original = lampa.Select.show;
+        var original = Lampa.Select.show;
         if (typeof original !== 'function') return false;
         if (original.onlineModDirectPlay) return true;
 
         function show(options) {
             if (options &&
-                options.title === lampa.Lang.translate('settings_rest_source') &&
+                options.title === Lampa.Lang.translate('settings_rest_source') &&
                 Array.isArray(options.items) &&
                 typeof options.onSelect === 'function') {
                 for (var i = 0; i < options.items.length; i++) {
@@ -34,11 +34,11 @@
         }
 
         show.onlineModDirectPlay = true;
-        lampa.Select.show = show;
+        Lampa.Select.show = show;
 
         // Move the original button, preserving Lampa's trailer handler.
         // The full event runs before controller navigation is collected.
-        lampa.Listener.follow('full', function (event) {
+        Lampa.Listener.follow('full', function (event) {
             if (!event || event.type !== 'complite' || !event.object ||
                 !event.object.activity || typeof event.object.activity.render !== 'function') return;
             var root = event.object.activity.render();
